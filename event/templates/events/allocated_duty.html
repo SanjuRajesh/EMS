@@ -1,0 +1,73 @@
+{% extends "events/base.html" %}
+{% block style %}
+<style>
+    .table-container {
+        width: 80%; 
+        overflow-x: auto; 
+        text-align: center;
+        margin: 0 auto;
+    }
+    .table-bordered {
+        width: 100%; 
+        margin: 20px 0;
+        border-collapse: collapse;
+        border: 2px solid #343a40; 
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .table-bordered th,
+    .table-bordered td {
+        border: 1px solid #343a40;
+        padding: 10px; 
+        text-align: center;
+    }
+    .table-bordered th {
+        background-color: #343a40;
+        color: #fff;
+        font-weight: bold;
+    }
+    .table-bordered tbody tr:nth-child(odd) {
+        background-color: #f2f2f2;
+    }
+    .table-bordered tbody tr:hover {
+        background-color: #ddd;
+    }
+    .table-bordered tbody tr {
+        transition: background-color 0.3s ease;
+    }
+    .text-center {
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+        color: #333;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center">Allocated Duties</h1>
+<hr>
+<div class="container">
+    <div class="table-container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Faculty</th>
+                    <th>Department Club</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for allocation in duty_allocs %}
+                <tr>
+                    <td>{{ allocation.faculty.name }}</td>
+                    <td>{{ allocation.dept_club.dc_name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}

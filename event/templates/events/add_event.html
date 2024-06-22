@@ -1,0 +1,120 @@
+{% extends "events/base.html" %}
+
+{% block title %}Add Event{% endblock %}
+
+{% block style %}
+    {{ block.super }}
+    <style>
+        /* Add your CSS styles here */
+        .container {
+            margin: 0 auto; /* Center the container horizontally */
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+        }
+
+        /* Set width for all input fields except submit button */
+        .form-group input[type="text"],
+        .form-group select,
+        .form-group textarea,
+        .form-group input[type="date"],
+        .form-group input[type="time"],
+        .form-group input[type="number"],
+        .form-group input[type="submit"] { /* Include input[type="submit"] in the selector */
+            width: calc(50% - 12px); /* Decrease the width here */
+            padding: 8px; /* Decrease the padding to maintain proportion */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensure padding and border are included in the width */
+        }
+
+        .form-group input[type="submit"] {
+            padding: 10px 20px; /* Keep the padding */
+            background-color: #59ff00;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: #00b309; /* Change color on hover */
+        }
+
+        /* Add margin between "From Date" input box and "From Time" text */
+        #from_time_label,
+        #time_to_label {
+            margin-top: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <center>
+    <h1>Add Event</h1>
+    </center>
+    <hr>
+    <form action="{% url 'add_event'%}" method="POST" enctype = "multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">Title</label>
+            {{ form.title }}
+        </div>
+        <div class="form-group">
+            <label for="mode">Mode</label>
+            {{ form.mode }}
+        </div>
+        <div class="form-group">
+            <label for="no_participants">Number of Participants</label>
+            {{ form.no_participants }}
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            {{ form.description }}
+        </div>
+        <div class="form-group">
+            <label for="from_date">From Date</label>
+            <input type="date" id="from_date" name="from_date">
+            <label id="from_time_label" for="from_time">From Time</label>
+            <input type="time" id="from_time" name="from_time">
+        </div>
+        <div class="form-group">
+            <label for="date_to">To Date</label>
+            <input type="date" id="date_to" name="date_to">
+            <label id="time_to_label" for="time_to">To Time</label>
+            <input type="time" id="time_to" name="time_to">
+        </div>
+        <input type="hidden" name="dept_club" value="{{ default_club_id }}">
+
+        <input type="hidden" name="dept_club" value="{{ default_club_id }}">
+    <div class="form-group">
+        <label>Dept Club:</label>
+        <input type="text" value="{{ default_club_name }}" readonly>
+    </div>
+        <div class="form-group">
+            <label for="tag">Tag</label>
+            {{ form.tag }}<br>
+        </div>
+        <div class="form-group">
+            <label for="brochure">Brochure</label>
+            {{ form.brochure }}
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+</div>
+{% endblock %}
