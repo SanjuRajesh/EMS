@@ -1,0 +1,109 @@
+{% extends 'events/base.html' %}
+
+{% block title %}Add Report{% endblock %}
+
+{% block content %}
+<div class="container">
+    <style>
+        /* CSS Styles */
+        .report-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea,
+        input[type="file"],
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box; /* Ensure padding and border are included in the width */
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus,
+        textarea:focus,
+        input[type="file"]:focus,
+        select:focus,
+        button:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        button {
+            background-color: #00b309;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        hr {
+            margin-top: 30px;
+            margin-bottom: 30px;
+            border: 0;
+            border-top: 1px solid #ccc;
+        }
+
+        /* Increase text box sizes */
+        input[type="file"] {
+            padding: 15px; /* Increase padding for photo input */
+        }
+
+    </style>
+
+    <h2 style="text-align: center;">Add Report</h2>
+    <hr>
+    <form method="post" enctype="multipart/form-data" class="report-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_event">Event:</label>
+            {{ form.event }}
+        </div>
+        <div class="form-group">
+            <label for="id_report">Report:</label>
+            {{ form.report }}
+        </div>
+        <div class="form-group">
+            <label for="id_youtube_link">YouTube Link:</label>
+            {{ form.youtube_link }}
+        </div>
+        <div class="form-group">
+            <label for="id_photo">Photo:</label>
+            {{ form.photo }}
+        </div>
+        <div class="form-group">
+            <label for="id_alternate_photo">Alternate Photo:</label>
+            {{ form.alternate_photo }}
+        </div>
+        
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

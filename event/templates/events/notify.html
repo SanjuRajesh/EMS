@@ -1,0 +1,182 @@
+{% extends "events/base.html" %}
+
+{% block style %}
+    <style>
+        .event-list {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .event-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .event-details {
+            display: flex;
+            flex: 3;
+            justify-content: space-between;
+            padding-right: 20px;
+        }
+
+        .event-details div {
+            flex: 1;
+            text-align: center;
+        }
+
+        .event-buttons {
+            display: flex;
+            flex: 1;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .event-buttons button {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn-approve {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-reject {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-details {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        hr {
+            margin-bottom: 20px;
+        }
+
+        /* Approved Events Styles */
+        .approved-event-list {
+            width: 80%;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .approved-event-item {
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #e8f5e9; /* Light green background */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .approved-event-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #388e3c; /* Dark green */
+            text-align: center;
+        }
+
+        .approved-event-details {
+            margin-bottom: 15px;
+        }
+
+        .approved-event-details p {
+            margin: 5px 0;
+        }
+
+        .approved-event-buttons {
+            text-align: center;
+        }
+
+        .approved-event-buttons button {
+            padding: 7px 14px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #00796b; /* Teal background */
+            color: white;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    
+    <div class="pending">
+        {% if user.is_superuser %}
+            <h1>Pending Events</h1>
+            <hr>
+            <div class="event-list">
+                {% for event in events %}
+                    <div class="event-item">
+                        <div class="event-details">
+                            <div>{{ event.title }}</div>
+                            <div>{{ event.dept_club }}</div>
+                            <div>{{ event.from_date }}</div>
+                            <div>{{ event.from_time }}</div>
+                        </div>
+                        <div class="event-buttons">
+                            <form action="{% url 'update_event_status' event.id 'APPROVED' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-approve">Approve</button>
+                            </form>
+                            <form action="{% url 'update_event_status' event.id 'REJECTED' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-reject">Reject</button>
+                            </form>
+                            <form action="{% url 'events' %}">
+                                <button type="submit" class="btn-details">Details</button>
+                            </form>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div>No events available</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="approved">
+        {% if not user.is_superuser %}
+            <h1>Approved Events</h1>
+            <hr>
+            {% if approved_events %}
+                <div class="approved-event-list">
+                    {% for event in approved_events %}
+                        <div class="approved-event-item">
+                            <div class="approved-event-title">{{ event.title }}</div>
+                            <div class="approved-event-details">
+                                <p><strong>Department/Club:</strong> {{ event.dept_club }}</p>
+                                <p><strong>Date:</strong> {{ event.from_date }} to {{ event.date_to }}</p>
+                                <p><strong>Time:</strong> {{ event.from_time }} to {{ event.time_to }}</p>
+                                <p><strong>Mode:</strong> {{ event.get_mode_display }}</p>
+                                <p><strong>Description:</strong> {{ event.description }}</p>
+                            </div>
+                            <div class="approved-event-buttons">
+                                <form action="{% url 'events' %}">
+                                    <button type="submit">Details</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No approved events found.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

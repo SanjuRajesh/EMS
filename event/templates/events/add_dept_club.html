@@ -1,0 +1,17 @@
+{% extends "events/base.html" %}
+{% block content %}
+
+
+   
+    <h2 class="text-center">Add New Department / Club</h2>
+    <form method="post" action="{% url 'add_dept_club' %}">
+        {% csrf_token %}
+        <input type="hidden" name="add_dept_club">
+        <div class="form-group">
+            <label for="dept_club_name">Department Club Name</label>
+            <input type="text" id="dept_club_name" name="dept_club_name" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Department Club</button>
+    </form>
+</div>
+{% endblock content %}

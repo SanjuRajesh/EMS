@@ -1,0 +1,61 @@
+{% extends "events/base.html" %}
+{% block content %}
+    <h1 class="form-heading">Add Faculty</h1>
+    <form method="post" enctype="multipart/form-data" class="form-container">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="submit-button">Add Faculty</button>
+    </form>
+{% endblock %}
+
+{% block style %}
+<style>
+    /* Center the heading */
+    .form-heading {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    /* Style for the form container */
+    .form-container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Style form elements */
+    .form-container label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-container input[type="text"],
+    .form-container input[type="file"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+    }
+
+    .form-container button.submit-button {
+        padding: 10px 20px;
+        border-radius: 4px;
+        color: #fff;
+        background-color: #28a745; /* Green color */
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .form-container button.submit-button:hover {
+        background-color: #218838; /* Darker green on hover */
+    }
+</style>
+{% endblock %}

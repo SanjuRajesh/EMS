@@ -1,0 +1,234 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}College Event Management{% endblock %}</title>
+    {% block style %}{% endblock %}
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ECF0F1;
+            color: #2C3E50;
+        }
+
+        .logo {
+            width: 100px;  /* Set the desired width */
+            height: auto;  /* Maintain aspect ratio */
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #2C3E50;
+            min-width: 160px;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #fff;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #1ABC9C;
+        }
+
+        .dropdown a {
+            color: white;
+            text-decoration: none;
+            padding-right: 5px;
+        }
+
+        .navbar {
+            background-color: #2C3E50;
+            color: #fff;
+            padding: 30px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .navbar-title {
+            font-size: 25px;
+            margin-left: 8px;
+            font-weight: bolder;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .navbar-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;  /* Center horizontally */
+            flex: 1;  /* Allow it to take available space */
+        }
+
+        .nav-item {
+            margin-right: 15px;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            align-items: center;
+            display: inline-block;
+        }
+
+        .nav-link:hover {
+            background-color: #555;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info span {
+            margin-right: 10px;
+        }
+
+        .container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-accent {
+            background-color: #2C3E50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-accent:hover {
+            background-color: #555;
+        }
+
+        /* Media Query for Small Devices */
+        @media (max-width: 768px) {
+            .navbar-links {
+                flex-direction: column;
+                align-items: center;  /* Center items horizontally in column layout */
+            }
+
+            .nav-item {
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+
+            .navbar-title {
+                position: static;
+                transform: none;
+                margin-bottom: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-title">E M S</div>
+    <ul class="navbar-links">
+        {% if not user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">About Us</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Contact Us</a>
+        </li>
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'notification' %}">Notify</a>
+            </li>
+            <li class="dropdown nav-item">
+                <a class="nav-link" href="#">Events</a>
+                <div class="dropdown-content">
+                    {% if not user.is_superuser %}
+                        <a class="nav-link" href="{% url 'add_event' %}">Add Event</a>
+                    {% endif %}
+                    <a class="nav-link" href="{% url 'events' %}">Event Details</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="#">Report</a>
+                <div class="dropdown-content">
+                    {% if not user.is_superuser %}
+                        <a class="nav-link" href="{% url 'add_report' %}">Add Report</a>
+                    {% endif %}
+                    <a class="nav-link" href="{% url 'report_page' %}">View Reports</a>
+                </div>
+            </li>
+            {% if user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'duty_alloc' %}">Admin Panel</a>
+                </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+    <div class="user-info">
+        {% if user.is_authenticated %}
+        <ul class="nav-item">
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="nav-link btn-accent">Logout</button>
+            </form>
+        </ul>
+        {% else %}
+            <ul class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </ul>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="container">
+    {% block content %}
+    <!-- Content goes here -->
+    {% endblock %}
+</div>
+
+</body>
+</html>

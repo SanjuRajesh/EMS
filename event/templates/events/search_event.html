@@ -1,0 +1,117 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .event-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .event-card:hover {
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .event-details {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .event-date {
+            color: #888;
+            font-size: 16px;
+            font-weight: normal;
+            margin-top: 0;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        button {
+            padding: 8px 12px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        button:focus {
+            outline: none;
+            border-color: #666;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+        }
+    </style>
+
+    <h1>Events</h1>
+
+
+    <div class="container">
+        {% if events %}
+            {% for event in events %}
+                <div class="event-card">
+                    <h2 class="event-title">{{ event.title }}</h2>
+                    <p class="event-details">{{ event.description }}</p>
+                    <p class="event-details">Mode: {{ event.mode }}</p>
+                    <p class="event-details">Participants: {{ event.no_participants }}</p>
+                    <p class="event-date">From: {{ event.from_date }} {{ event.from_time }}</p>
+                    <p class="event-date">To: {{ event.date_to }} {{ event.time_to }}</p>
+                    <p class="event-date">Department/Club: {{ event.dept_club }}</p>
+                    {% if event.brochure %}
+                        <img class="event-brochure" src="{{ event.brochure.url }}" alt="Brochure" style="max-width: 100%; margin-top: 10px;">
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No events found.</p>
+        {% endif %}
+    </div>
+{% endblock %}
