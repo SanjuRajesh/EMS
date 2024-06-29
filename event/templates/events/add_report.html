@@ -75,6 +75,59 @@
         input[type="file"] {
             padding: 15px; /* Increase padding for photo input */
         }
+        .popup-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px; /* Adjust width as needed */
+            text-align: center;
+            z-index: 1000; /* Ensure it appears above other content */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0s 3s; /* Delay visibility transition */
+        }
+
+        .popup-message.show {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s, visibility 0s;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            margin-bottom: 435px;
+            margin-left: 450px;
+        }
+
+        /* Animation for fade in/out */
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            95% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .fade-in-out {
+            animation: fadeInOut 4s ease-in-out;
+        }
 
     </style>
 
@@ -106,4 +159,19 @@
         <button type="submit">Submit</button>
     </form>
 </div>
+{% if messages %}
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+        <div id="popup-message" class="popup-message alert alert-success fade-in-out show">
+            {{ message }}
+        </div>
+        <script>
+            setTimeout(function() {
+                var popupMessage = document.getElementById('popup-message');
+                popupMessage.classList.remove('show');
+            }, 3000); // Adjust the delay (in milliseconds) as needed
+        </script>
+    {% endif %}
+{% endfor %}
+{% endif %}
 {% endblock %}

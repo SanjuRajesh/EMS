@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required,user_passes_test
 from .forms import UserCreationFormExtended
 from django.utils import timezone
+from django.contrib import messages
 from .forms import *
 from .models import *
 
@@ -15,19 +16,6 @@ def home(request):
     }
     return render(request,'events/home.html',context)
 
-
-
-# @login_required
-# def notification(request):
-#     # Get all Event IDs that are in the Permission table
-#     permission_event_ids = Permission.objects.values_list('Event_id', flat=True)
-#     # Get Events that are not in the Permission table
-#     events = Event.objects.exclude(id__in=permission_event_ids)
-    
-#     context = {
-#         'events': events
-#     }
-#     return render(request, 'events/notify.html', context)
 
 def admin_check(user):
     return user.is_superuser 
@@ -84,7 +72,8 @@ def add_event(request):
         form = addeventForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return render(request, 'events/conform.html')  # Ensure this path is correct
+            messages.success(request, 'Event added successfully!')
+            return redirect('add_event')  # Ensure this path is correct
         else:
             print(form.errors)  # Print form errors to debug
     else:
@@ -93,7 +82,7 @@ def add_event(request):
 
     return render(request, 'events/add_event.html', {'form': form, 'default_club_id': default_club_id, 'default_club_name': default_club_name})
 
- # Import the Event model if not already imported
+
 
 
 
@@ -137,7 +126,8 @@ def add_report(request):
         form = EventReportForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('report_page')  # Redirect to the report page after saving
+            messages.success(request, 'Report added successfully!')
+            return redirect('add_report')  # Redirect to the report page after saving
         else:
             print(form.errors)  # Print form errors to debug
     else:
@@ -176,7 +166,7 @@ def add_allocation(request):
         dept_club = Dept_Club.objects.get(id=dept_club_id)
 
         Duty_Alloc.objects.create(faculty=faculty, dept_club=dept_club)
-        
+        return render(request, 'events/duty_alloc.html')
     faculties = Faculty.objects.all()
     dept_clubs = Dept_Club.objects.all()
     duty_allocs = Duty_Alloc.objects.all()
@@ -194,10 +184,11 @@ def add_allocation(request):
 def add_dept_club(request):
     if request.method == "POST":
         if "add_dept_club" in request.POST:
-            # Handle the new department club form submission
             dept_club_name = request.POST.get("dept_club_name")
             if dept_club_name:
                 Dept_Club.objects.create(dc_name=dept_club_name)
+                messages.success(request, 'Department Club added successfully!')
+                return redirect('add_dept_club')  # Redirect to clear POST data and prevent re-submission
     return render(request, 'events/add_dept_club.html')
 
 
@@ -242,13 +233,6 @@ def edit_event(request, event_id):
         form = addeventForm(instance=event)
     return render(request, 'events/edit_event.html', {'form': form, 'event': event})
 
-def confirm_delete(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-    if request.method == 'POST':
-        event.delete()
-        return redirect('events')
-    return render(request, 'events/confirm_delete.html', {'event': event})
-
 
 def delete_report(request, report_id):
     report = get_object_or_404(Event_Report, pk=report_id)
@@ -279,11 +263,17 @@ def edit_event(request, event_id):
         form = addeventForm(instance=event)
     return render(request, 'events/edit_event.html', {'form': form, 'event': event})
 
+# def confirm_delete(request, event_id):
+#     event = get_object_or_404(Event, pk=event_id)
+#     event.delete()
+#     return redirect('events')
+
 def confirm_delete(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
-    event.delete()
-    return redirect('events')
-
+    if request.method == 'POST':
+        event.delete()
+        return redirect('events')
+    return render(request, 'events/confirm_delete.html', {'event': event})
 
 @login_required
 def notification(request):

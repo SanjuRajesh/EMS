@@ -1,16 +1,63 @@
 {% extends 'events/base.html' %}
 {% block style %}
 <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 50px auto;
+        padding: 0 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .text-center {
+        text-align: center;
+        color: #333;
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+        padding-top: 20px;
+    }
+
     .control-panel-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-        justify-items: center;
-        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+        padding: 20px;
     }
 
     .grid-item {
-        width: 100%;
+        width: 250px;
+        background: #1e022dbd; /* Teal color */
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        color: #ffffff; /* White text */
+        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .grid-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .grid-item i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .grid-item span {
+        font-size: 1.2rem;
+        font-weight: bold;
     }
 
     .control-panel-link {
@@ -18,54 +65,17 @@
         color: inherit;
     }
 
-    .grid-content {
-        background: #cec6c6; /* Olive green */
-        border-radius: 8px;
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color: #333;
-        transition: transform 0.3s, box-shadow 0.3s;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .grid-content i {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        color: #ffffff; /* White color for icons */
-    }
-
-    .grid-content span {
-        font-size: 1.2rem;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    .grid-content:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .text-center {
-        color: #333;
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 2rem;
-        text-align: center;
-    }
-
     @media (max-width: 768px) {
-        .grid-content {
-            padding: 1rem;
+        .grid-item {
+            padding: 1.5rem;
+            width: 100%;
         }
 
-        .grid-content i {
+        .grid-item i {
             font-size: 2.5rem;
         }
 
-        .grid-content span {
+        .grid-item span {
             font-size: 1rem;
         }
     }
@@ -73,48 +83,37 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Admin Workspace</h1>
+<div class="container">
+    <h1 class="text-center">Admin Workspace</h1>
     <div class="control-panel-grid">
         <div class="grid-item">
             <a href="{% url 'add_user' %}" class="control-panel-link">
-                <div class="grid-content shadow-lg">
-                    <i class="fas fa-user-plus"></i>
-                    <span>Add User</span>
-                </div>
+                <i class="fas fa-user-plus"></i>
+                <span>Add User</span>
             </a>
         </div>
         <div class="grid-item">
-            <a href="{% url 'allocated_duty' %}" class="control-panel-link">
-                <div class="grid-content shadow-lg">
-                    <i class="fas fa-list-alt"></i>
-                    <span>Allocated List</span>
-                </div>
+            <a href="{% url 'add_faculty' %}" class="control-panel-link">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>Add Faculty</span>
             </a>
         </div>
         <div class="grid-item">
             <a href="{% url 'add_allocation' %}" class="control-panel-link">
-                <div class="grid-content shadow-lg">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Add Duty</span>
-                </div>
+                <i class="fas fa-plus-circle"></i>
+                <span>Add Duty</span>
             </a>
         </div>
-        
         <div class="grid-item">
-            <a href="{% url 'add_faculty' %}" class="control-panel-link">
-                <div class="grid-content shadow-lg">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                    <span>Add Faculty</span>
-                </div>
+            <a href="{% url 'allocated_duty' %}" class="control-panel-link">
+                <i class="fas fa-list-alt"></i>
+                <span>Allocated List</span>
             </a>
         </div>
         <div class="grid-item">
             <a href="{% url 'add_dept_club' %}" class="control-panel-link">
-                <div class="grid-content shadow-lg">
-                    <i class="fas fa-building"></i>
-                    <span>Add Department/Club</span>
-                </div>
+                <i class="fas fa-building"></i>
+                <span>Add Department/Club</span>
             </a>
         </div>
     </div>

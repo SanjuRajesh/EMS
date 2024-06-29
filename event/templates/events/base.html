@@ -174,9 +174,7 @@
         <li class="nav-item">
             <a class="nav-link" href="#">About Us</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Contact Us</a>
-        </li>
+        
         {% endif %}
         
         {% if user.is_authenticated %}
@@ -211,10 +209,10 @@
     <div class="user-info">
         {% if user.is_authenticated %}
         <ul class="nav-item">
-            <form action="{% url 'logout' %}" method="post">
+            <ul class="nav-item">
                 {% csrf_token %}
-                <button type="submit" class="nav-link btn-accent">Logout</button>
-            </form>
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </ul>
         </ul>
         {% else %}
             <ul class="nav-item">
